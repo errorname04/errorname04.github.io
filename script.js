@@ -2,6 +2,13 @@
 const suits = ['♠', '♥', '♦', '♣'];
 const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
+// Game state
+let currentRound = 1;
+let pot = 0;
+let playerCards = [];
+let communityCards = [];
+let deck = [];
+
 // Create a deck of 52 cards
 function createDeck() {
     const deck = [];
@@ -23,11 +30,18 @@ function shuffleDeck(deck) {
     return shuffled;
 }
 
-// Deal two random cards from the deck
-function dealCards() {
-    const deck = createDeck();
-    const shuffled = shuffleDeck(deck);
-    return [shuffled[0], shuffled[1]];
+// Deal initial hand (2 player cards + 5 community cards)
+function dealHand() {
+    const newDeck = createDeck();
+    const shuffled = shuffleDeck(newDeck);
+    
+    // Deal 2 player cards
+    playerCards = [shuffled[0], shuffled[1]];
+    
+    // Deal 5 community cards
+    communityCards = [shuffled[2], shuffled[3], shuffled[4], shuffled[5], shuffled[6]];
+    
+    deck = shuffled;
 }
 
 // Check if a card is red (hearts or diamonds)
@@ -68,25 +82,98 @@ function displayCard(cardElement, card) {
     cardElement.appendChild(rankBottom);
 }
 
+// Update the display based on current round
+function updateDisplay() {
+    // Display player cards (always visible)
+    displayCard(document.getElementById('card1'), playerCards[0]);
+    displayCard(document.getElementById('card2'), playerCards[1]);
+    
+    // Display community cards based on round
+    // Round 1: No community cards
+    // Round 2: 3 cards (flop)
+    // Round 3: 4 cards (flop + turn)
+    // Round 4: 5 cards (flop + turn + river)
+    
+    const communityCardElements = [
+        document.getElementById('community1'),
+        document.getElementById('community2'),
+        document.getElementById('community3'),
+        document.getElementById('community4'),
+        document.getElementById('community5')
+    ];
+    
+    let cardsToShow = 0;
+    if (currentRound >= 2) cardsToShow = 3; // Flop
+    if (currentRound >= 3) cardsToShow = 4; // Turn
+    if (currentRound >= 4) cardsToShow = 5; // River
+    
+    for (let i = 0; i < 5; i++) {
+        if (i < cardsToShow) {
+            displayCard(communityCardElements[i], communityCards[i]);
+        } else {
+            // Show card back
+            communityCardElements[i].innerHTML = '<div class="card-back">?</div>';
+            communityCardElements[i].classList.add('card-back');
+            communityCardElements[i].classList.remove('red', 'black');
+        }
+    }
+    
+    // Update round number
+    document.getElementById('roundNumber').textContent = currentRound;
+    
+    // Update pot display
+    document.getElementById('potAmount').textContent = pot;
+    
+    // Disable next round button after round 4
+    const nextRoundButton = document.getElementById('nextRoundButton');
+    if (currentRound >= 4) {
+        nextRoundButton.disabled = true;
+        nextRoundButton.textContent = 'Game Complete';
+    } else {
+        nextRoundButton.disabled = false;
+        nextRoundButton.textContent = 'Next Round';
+    }
+}
+
+// Add bet to pot
+function addToPot() {
+    const betInput = document.getElementById('betAmount');
+    const betAmount = parseFloat(betInput.value) || 0;
+    
+    if (betAmount > 0) {
+        pot += betAmount;
+        betInput.value = 0;
+        updateDisplay();
+    }
+}
+
+// Move to next round
+function nextRound() {
+    if (currentRound < 4) {
+        currentRound++;
+        updateDisplay();
+    }
+}
+
 // Initialize the game
 function initGame() {
-    const card1Element = document.getElementById('card1');
-    const card2Element = document.getElementById('card2');
-    const dealButton = document.getElementById('dealButton');
+    // Deal initial hand
+    dealHand();
     
-    // Deal initial cards
-    const cards = dealCards();
-    displayCard(card1Element, cards[0]);
-    displayCard(card2Element, cards[1]);
+    // Set up event listeners
+    document.getElementById('betButton').addEventListener('click', addToPot);
+    document.getElementById('nextRoundButton').addEventListener('click', nextRound);
     
-    // Add event listener to deal button
-    dealButton.addEventListener('click', () => {
-        const newCards = dealCards();
-        displayCard(card1Element, newCards[0]);
-        displayCard(card2Element, newCards[1]);
+    // Allow Enter key to add to pot
+    document.getElementById('betAmount').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addToPot();
+        }
     });
+    
+    // Initial display
+    updateDisplay();
 }
 
 // Start the game when the page loads
 document.addEventListener('DOMContentLoaded', initGame);
-
