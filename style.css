@@ -76,28 +76,50 @@ h1 {
     z-index: 1;
 }
 
-/* Hide card face when not hovered */
-.card:not(:hover) .card-rank-top,
-.card:not(:hover) .card-rank-bottom,
-.card:not(:hover) .card-suit-center {
+/* Community cards: always visible */
+.community-card {
+    background: #fff !important;
+}
+
+.community-card .card-back {
     display: none !important;
 }
 
-.card:not(:hover) .card-back {
+.community-card .card-rank-top,
+.community-card .card-rank-bottom {
     display: block !important;
 }
 
-/* Show card face on hover */
-.card:hover .card-back {
+.community-card .card-suit-center {
+    display: flex !important;
+}
+
+/* Player cards: hide card face when not hovered */
+.card:not(.community-card):not(:hover) .card-rank-top,
+.card:not(.community-card):not(:hover) .card-rank-bottom,
+.card:not(.community-card):not(:hover) .card-suit-center {
     display: none !important;
 }
 
-.card:hover .card-rank-top,
-.card:hover .card-rank-bottom {
+.card:not(.community-card):not(:hover) .card-back {
     display: block !important;
 }
 
-.card:hover .card-suit-center {
+/* Show player card face on hover */
+.card:not(.community-card):hover {
+    background: #fff !important;
+}
+
+.card:not(.community-card):hover .card-back {
+    display: none !important;
+}
+
+.card:not(.community-card):hover .card-rank-top,
+.card:not(.community-card):hover .card-rank-bottom {
+    display: block !important;
+}
+
+.card:not(.community-card):hover .card-suit-center {
     display: flex !important;
 }
 
