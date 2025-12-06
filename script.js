@@ -38,7 +38,7 @@ function dealHand() {
     // Deal 2 player cards
     playerCards = [shuffled[0], shuffled[1]];
     
-    // Deal 5 community cards (flop, turn, river)
+    // Deal 5 community cards
     communityCards = [shuffled[2], shuffled[3], shuffled[4], shuffled[5], shuffled[6]];
     
     deck = shuffled;
@@ -82,70 +82,11 @@ function displayCard(cardElement, card) {
     cardElement.appendChild(rankBottom);
 }
 
-// Show card back
-function showCardBack(cardElement) {
-    cardElement.innerHTML = '<div class="card-back">?</div>';
-    cardElement.classList.add('card-back');
-    cardElement.classList.remove('red', 'black');
-}
-
-// Store card data for player cards (for hover reveal)
-function setupPlayerCard(cardElement, card) {
-    // Clear existing content
-    cardElement.innerHTML = '';
-    
-    // Store card data as data attribute
-    cardElement.setAttribute('data-card-rank', card.rank);
-    cardElement.setAttribute('data-card-suit', card.suit);
-    cardElement.setAttribute('data-card-red', isRedCard(card));
-    
-    // Add player-card class for hover styling
-    cardElement.classList.add('player-card');
-    
-    // Add color class
-    if (isRedCard(card)) {
-        cardElement.classList.add('red');
-        cardElement.classList.remove('black');
-    } else {
-        cardElement.classList.add('black');
-        cardElement.classList.remove('red');
-    }
-    
-    // Create card back (visible by default)
-    const cardBack = document.createElement('div');
-    cardBack.className = 'card-back';
-    cardBack.textContent = '?';
-    cardElement.appendChild(cardBack);
-    
-    // Create card face structure (hidden by default, shown on hover)
-    const rankTop = document.createElement('div');
-    rankTop.className = 'card-rank-top';
-    rankTop.textContent = card.rank;
-    rankTop.style.display = 'none';
-    
-    const suitCenter = document.createElement('div');
-    suitCenter.className = 'card-suit-center';
-    suitCenter.textContent = card.suit;
-    suitCenter.style.display = 'none';
-    
-    const rankBottom = document.createElement('div');
-    rankBottom.className = 'card-rank-bottom';
-    rankBottom.textContent = card.rank;
-    rankBottom.style.display = 'none';
-    
-    cardElement.appendChild(rankTop);
-    cardElement.appendChild(suitCenter);
-    cardElement.appendChild(rankBottom);
-}
-
 // Update the display based on current round
 function updateDisplay() {
-    const card1Element = document.getElementById('card1');
-    const card2Element = document.getElementById('card2');
-    
-    // Setup player cards (face-down, revealed on hover)
-    setupPlayerCard(card1Element, playerCards[0]);
-    setupPlayerCard(card2Element, playerCards[1]);
+    // Display player cards (always visible)
+    displayCard(document.getElementById('card1'), playerCards[0]);
+    displayCard(document.getElementById('card2'), playerCards[1]);
     
     // Display community cards based on round
     // Round 1: No community cards
@@ -169,8 +110,10 @@ function updateDisplay() {
     for (let i = 0; i < 5; i++) {
         if (i < cardsToShow) {
             displayCard(communityCardElements[i], communityCards[i]);
+            communityCardElements[i].style.display = 'flex';
         } else {
-            showCardBack(communityCardElements[i]);
+            // Hide cards that aren't revealed yet
+            communityCardElements[i].style.display = 'none';
         }
     }
     
@@ -178,7 +121,7 @@ function updateDisplay() {
     document.getElementById('roundNumber').textContent = currentRound;
     
     // Update pot display
-    document.getElementById('potAmount').textContent = pot.toFixed(2);
+    document.getElementById('potAmount').textContent = pot;
     
     // Disable next round button after round 4
     const nextRoundButton = document.getElementById('nextRoundButton');
