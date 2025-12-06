@@ -150,6 +150,42 @@ h1 {
     margin-top: 20px;
 }
 
+/* Player cards: face-down by default, reveal on hover */
+.player-card {
+    cursor: pointer;
+}
+
+.player-card:not(:hover) {
+    background: #2c3e50 !important;
+}
+
+.player-card:not(:hover) .card-rank-top,
+.player-card:not(:hover) .card-rank-bottom,
+.player-card:not(:hover) .card-suit-center {
+    display: none !important;
+}
+
+.player-card:not(:hover) .card-back {
+    display: block !important;
+}
+
+.player-card:hover {
+    background: #fff !important;
+}
+
+.player-card:hover .card-back {
+    display: none !important;
+}
+
+.player-card:hover .card-rank-top,
+.player-card:hover .card-rank-bottom {
+    display: block !important;
+}
+
+.player-card:hover .card-suit-center {
+    display: flex !important;
+}
+
 .player-cards-section h2, .community-cards-section h2 {
     color: #fff;
     margin-bottom: 20px;
