@@ -89,14 +89,63 @@ function showCardBack(cardElement) {
     cardElement.classList.remove('red', 'black');
 }
 
+// Store card data for player cards (for hover reveal)
+function setupPlayerCard(cardElement, card) {
+    // Clear existing content
+    cardElement.innerHTML = '';
+    
+    // Store card data as data attribute
+    cardElement.setAttribute('data-card-rank', card.rank);
+    cardElement.setAttribute('data-card-suit', card.suit);
+    cardElement.setAttribute('data-card-red', isRedCard(card));
+    
+    // Add player-card class for hover styling
+    cardElement.classList.add('player-card');
+    
+    // Add color class
+    if (isRedCard(card)) {
+        cardElement.classList.add('red');
+        cardElement.classList.remove('black');
+    } else {
+        cardElement.classList.add('black');
+        cardElement.classList.remove('red');
+    }
+    
+    // Create card back (visible by default)
+    const cardBack = document.createElement('div');
+    cardBack.className = 'card-back';
+    cardBack.textContent = '?';
+    cardElement.appendChild(cardBack);
+    
+    // Create card face structure (hidden by default, shown on hover)
+    const rankTop = document.createElement('div');
+    rankTop.className = 'card-rank-top';
+    rankTop.textContent = card.rank;
+    rankTop.style.display = 'none';
+    
+    const suitCenter = document.createElement('div');
+    suitCenter.className = 'card-suit-center';
+    suitCenter.textContent = card.suit;
+    suitCenter.style.display = 'none';
+    
+    const rankBottom = document.createElement('div');
+    rankBottom.className = 'card-rank-bottom';
+    rankBottom.textContent = card.rank;
+    rankBottom.style.display = 'none';
+    
+    cardElement.appendChild(rankTop);
+    cardElement.appendChild(suitCenter);
+    cardElement.appendChild(rankBottom);
+}
+
 // Update the display based on current round
 function updateDisplay() {
     const card1Element = document.getElementById('card1');
     const card2Element = document.getElementById('card2');
     
-    // Display player cards (always visible from round 1)
-    displayCard(card1Element, playerCards[0]);
-    displayCard(card2Element, playerCards[1]);
+    // Setup player cards (face-down, revealed on hover)
+    setupPlayerCard(card1Element, playerCards[0]);
+    setupPlayerCard(card2Element, playerCards[1]);
     
     // Display community cards based on round
     // Round 1: No community cards
