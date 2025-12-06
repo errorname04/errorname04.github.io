@@ -47,21 +47,23 @@ h1 {
 .card {
     width: 150px;
     height: 210px;
-    background: #fff;
+    background: #2c3e50;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    background: #fff;
 }
 
 .card-back {
@@ -71,6 +73,32 @@ h1 {
     transform: translate(-50%, -50%);
     font-size: 3em;
     color: #999;
+    z-index: 1;
+}
+
+/* Hide card face when not hovered */
+.card:not(:hover) .card-rank-top,
+.card:not(:hover) .card-rank-bottom,
+.card:not(:hover) .card-suit-center {
+    display: none !important;
+}
+
+.card:not(:hover) .card-back {
+    display: block !important;
+}
+
+/* Show card face on hover */
+.card:hover .card-back {
+    display: none !important;
+}
+
+.card:hover .card-rank-top,
+.card:hover .card-rank-bottom {
+    display: block !important;
+}
+
+.card:hover .card-suit-center {
+    display: flex !important;
 }
 
 .card.red {
