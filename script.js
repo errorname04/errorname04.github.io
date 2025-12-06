@@ -51,7 +51,7 @@ function isRedCard(card) {
 
 // Display a card on the screen
 function displayCard(cardElement, card) {
-    // Remove card-back class if present
+    // Clear existing content
     cardElement.innerHTML = '';
     cardElement.classList.remove('card-back');
     
@@ -64,18 +64,27 @@ function displayCard(cardElement, card) {
         cardElement.classList.remove('red');
     }
     
-    // Create card structure
+    // Create card back (visible by default)
+    const cardBack = document.createElement('div');
+    cardBack.className = 'card-back';
+    cardBack.textContent = '?';
+    cardElement.appendChild(cardBack);
+    
+    // Create card structure (hidden by default, shown on hover)
     const rankTop = document.createElement('div');
     rankTop.className = 'card-rank-top';
     rankTop.textContent = card.rank;
+    rankTop.style.display = 'none';
     
     const suitCenter = document.createElement('div');
     suitCenter.className = 'card-suit-center';
     suitCenter.textContent = card.suit;
+    suitCenter.style.display = 'none';
     
     const rankBottom = document.createElement('div');
     rankBottom.className = 'card-rank-bottom';
     rankBottom.textContent = card.rank;
+    rankBottom.style.display = 'none';
     
     cardElement.appendChild(rankTop);
     cardElement.appendChild(suitCenter);
