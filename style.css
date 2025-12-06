@@ -45,14 +45,14 @@ h1 {
 }
 
 .card {
-    width: 100px;
-    height: 140px;
+    width: 150px;
+    height: 210px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 10px;
+    padding: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
@@ -69,12 +69,8 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2em;
+    font-size: 3em;
     color: #999;
-}
-
-.card.card-back {
-    background: #2c3e50;
 }
 
 .card.red {
@@ -86,14 +82,14 @@ h1 {
 }
 
 .card-rank-top {
-    font-size: 1em;
+    font-size: 1.5em;
     font-weight: bold;
     text-align: left;
     line-height: 1;
 }
 
 .card-rank-bottom {
-    font-size: 1em;
+    font-size: 1.5em;
     font-weight: bold;
     text-align: right;
     line-height: 1;
@@ -101,7 +97,7 @@ h1 {
 }
 
 .card-suit-center {
-    font-size: 2.5em;
+    font-size: 4em;
     text-align: center;
     flex: 1;
     display: flex;
@@ -132,66 +128,9 @@ h1 {
     color: #ffd700;
 }
 
-.community-cards-section {
-    width: 100%;
-    margin-bottom: 40px;
-}
-
-.player-cards-section {
+.player-cards-section, .community-cards-section {
     width: 100%;
     margin-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.community-cards-container {
-    margin-bottom: 20px;
-}
-
-.player-cards-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-}
-
-/* Player cards: face-down by default, reveal on hover */
-.player-card {
-    cursor: pointer;
-}
-
-.player-card:not(:hover) {
-    background: #2c3e50 !important;
-}
-
-.player-card:not(:hover) .card-rank-top,
-.player-card:not(:hover) .card-rank-bottom,
-.player-card:not(:hover) .card-suit-center {
-    display: none !important;
-}
-
-.player-card:not(:hover) .card-back {
-    display: block !important;
-}
-
-.player-card:hover {
-    background: #fff !important;
-}
-
-.player-card:hover .card-back {
-    display: none !important;
-}
-
-.player-card:hover .card-rank-top,
-.player-card:hover .card-rank-bottom {
-    display: block !important;
-}
-
-.player-card:hover .card-suit-center {
-    display: flex !important;
 }
 
 .player-cards-section h2, .community-cards-section h2 {
@@ -199,12 +138,6 @@ h1 {
     margin-bottom: 20px;
     font-size: 1.5em;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    text-align: center;
-}
-
-.player-cards-section h2 {
-    margin-bottom: 15px;
 }
 
 .betting-controls {
@@ -279,20 +212,15 @@ h1 {
 
 @media (max-width: 600px) {
     .card {
-        width: 80px;
-        height: 112px;
+        width: 120px;
+        height: 168px;
     }
     
     .card-suit-center {
-        font-size: 2em;
-    }
-    
-    .card-back {
-        font-size: 1.5em;
+        font-size: 3em;
     }
     
     h1 {
         font-size: 2em;
     }
 }
-
