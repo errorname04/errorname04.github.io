@@ -38,7 +38,7 @@ function dealHand() {
     // Deal 2 player cards
     playerCards = [shuffled[0], shuffled[1]];
     
-    // Deal 5 community cards
+    // Deal 5 community cards (flop, turn, river)
     communityCards = [shuffled[2], shuffled[3], shuffled[4], shuffled[5], shuffled[6]];
     
     deck = shuffled;
@@ -82,11 +82,21 @@ function displayCard(cardElement, card) {
     cardElement.appendChild(rankBottom);
 }
 
+// Show card back
+function showCardBack(cardElement) {
+    cardElement.innerHTML = '<div class="card-back">?</div>';
+    cardElement.classList.add('card-back');
+    cardElement.classList.remove('red', 'black');
+}
+
 // Update the display based on current round
 function updateDisplay() {
-    // Display player cards (always visible)
-    displayCard(document.getElementById('card1'), playerCards[0]);
-    displayCard(document.getElementById('card2'), playerCards[1]);
+    const card1Element = document.getElementById('card1');
+    const card2Element = document.getElementById('card2');
+    
+    // Display player cards (always visible from round 1)
+    displayCard(card1Element, playerCards[0]);
+    displayCard(card2Element, playerCards[1]);
     
     // Display community cards based on round
     // Round 1: No community cards
@@ -111,10 +121,7 @@ function updateDisplay() {
         if (i < cardsToShow) {
             displayCard(communityCardElements[i], communityCards[i]);
         } else {
-            // Show card back
-            communityCardElements[i].innerHTML = '<div class="card-back">?</div>';
-            communityCardElements[i].classList.add('card-back');
-            communityCardElements[i].classList.remove('red', 'black');
+            showCardBack(communityCardElements[i]);
         }
     }
     
@@ -122,7 +129,7 @@ function updateDisplay() {
     document.getElementById('roundNumber').textContent = currentRound;
     
     // Update pot display
-    document.getElementById('potAmount').textContent = pot;
+    document.getElementById('potAmount').textContent = pot.toFixed(2);
     
     // Disable next round button after round 4
     const nextRoundButton = document.getElementById('nextRoundButton');
