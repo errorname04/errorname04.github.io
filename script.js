@@ -64,27 +64,32 @@ function displayCard(cardElement, card) {
         cardElement.classList.remove('red');
     }
     
-    // Create card back (visible by default)
-    const cardBack = document.createElement('div');
-    cardBack.className = 'card-back';
-    cardBack.textContent = '?';
-    cardElement.appendChild(cardBack);
+    // Check if this is a community card (always visible)
+    const isCommunityCard = cardElement.classList.contains('community-card');
     
-    // Create card structure (hidden by default, shown on hover)
+    // Create card back (visible by default for player cards only)
+    if (!isCommunityCard) {
+        const cardBack = document.createElement('div');
+        cardBack.className = 'card-back';
+        cardBack.textContent = '?';
+        cardElement.appendChild(cardBack);
+    }
+    
+    // Create card structure
     const rankTop = document.createElement('div');
     rankTop.className = 'card-rank-top';
     rankTop.textContent = card.rank;
-    rankTop.style.display = 'none';
+    rankTop.style.display = isCommunityCard ? 'block' : 'none';
     
     const suitCenter = document.createElement('div');
     suitCenter.className = 'card-suit-center';
     suitCenter.textContent = card.suit;
-    suitCenter.style.display = 'none';
+    suitCenter.style.display = isCommunityCard ? 'flex' : 'none';
     
     const rankBottom = document.createElement('div');
     rankBottom.className = 'card-rank-bottom';
     rankBottom.textContent = card.rank;
-    rankBottom.style.display = 'none';
+    rankBottom.style.display = isCommunityCard ? 'block' : 'none';
     
     cardElement.appendChild(rankTop);
     cardElement.appendChild(suitCenter);
@@ -119,6 +124,8 @@ function updateDisplay() {
     for (let i = 0; i < 5; i++) {
         if (i < cardsToShow) {
             displayCard(communityCardElements[i], communityCards[i]);
+            // Add community-card class so it's always visible
+            communityCardElements[i].classList.add('community-card');
             communityCardElements[i].style.display = 'flex';
         } else {
             // Hide cards that aren't revealed yet
