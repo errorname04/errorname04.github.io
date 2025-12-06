@@ -140,6 +140,9 @@ h1 {
 .player-cards-section {
     width: 100%;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .community-cards-container {
@@ -148,6 +151,11 @@ h1 {
 
 .player-cards-container {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
 }
 
 /* Player cards: face-down by default, reveal on hover */
@@ -191,6 +199,12 @@ h1 {
     margin-bottom: 20px;
     font-size: 1.5em;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    text-align: center;
+}
+
+.player-cards-section h2 {
+    margin-bottom: 15px;
 }
 
 .betting-controls {
