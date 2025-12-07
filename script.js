@@ -8,6 +8,7 @@ let pot = 0;
 let playerCards = [];
 let communityCards = [];
 let deck = [];
+let amountOfPlayers = 4; // Number of other players (excluding you)
 
 // Create a deck of 52 cards
 function createDeck() {
@@ -96,6 +97,41 @@ function displayCard(cardElement, card) {
     cardElement.appendChild(rankBottom);
 }
 
+// Create other players' cards around the center
+function createOtherPlayers() {
+    const container = document.getElementById('otherPlayers');
+    container.innerHTML = '';
+    
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+    
+    for (let i = 0; i < amountOfPlayers; i++) {
+        const angle = (i / amountOfPlayers) * 2 * Math.PI - Math.PI / 2; // Start from top
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'other-player';
+        playerDiv.style.left = x + 'px';
+        playerDiv.style.top = y + 'px';
+        playerDiv.style.transform = 'translate(-50%, -50%)';
+        
+        // Create 2 face-down cards for each player
+        for (let j = 0; j < 2; j++) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'other-player-card';
+            const cardBack = document.createElement('div');
+            cardBack.className = 'card-back';
+            cardBack.textContent = '?';
+            cardDiv.appendChild(cardBack);
+            playerDiv.appendChild(cardDiv);
+        }
+        
+        container.appendChild(playerDiv);
+    }
+}
+
 // Update the display based on current round
 function updateDisplay() {
     // Display player cards (always visible)
@@ -132,6 +168,9 @@ function updateDisplay() {
             communityCardElements[i].style.display = 'none';
         }
     }
+    
+    // Create other players' cards
+    createOtherPlayers();
     
     // Update round number
     document.getElementById('roundNumber').textContent = currentRound;
@@ -184,6 +223,11 @@ function initGame() {
         if (e.key === 'Enter') {
             addToPot();
         }
+    });
+    
+    // Handle window resize to reposition other players
+    window.addEventListener('resize', () => {
+        createOtherPlayers();
     });
     
     // Initial display
