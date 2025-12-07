@@ -6,35 +6,36 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #0f4c3a 0%, #1a5c4a 100%);
+    background: #0f4c3a;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-info {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.container {
-    text-align: center;
-    background: rgba(255, 255, 255, 0.1);
+    gap: 30px;
+    z-index: 100;
+    padding: 15px 30px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
     backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-h1 {
-    color: #fff;
-    margin-bottom: 40px;
-    font-size: 2.5em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .game-area {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 30px;
+    position: relative;
 }
 
 .cards-container {
@@ -155,17 +156,6 @@ h1 {
     justify-content: center;
 }
 
-.game-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 15px 30px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 15px;
-    flex-wrap: wrap;
-    gap: 20px;
-}
 
 .round-indicator, .pot-display {
     color: #fff;
@@ -178,24 +168,63 @@ h1 {
     color: #ffd700;
 }
 
-.player-cards-section, .community-cards-section {
-    width: 100%;
-    margin-bottom: 30px;
+.community-cards-section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
 }
 
-.player-cards-section h2, .community-cards-section h2 {
-    color: #fff;
-    margin-bottom: 20px;
-    font-size: 1.5em;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+.player-cards-section {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.other-players-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.other-player {
+    position: absolute;
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+.other-player-card {
+    width: 80px;
+    height: 112px;
+    background: #2c3e50;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.other-player-card .card-back {
+    font-size: 2em;
 }
 
 .betting-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     gap: 20px;
     align-items: center;
-    width: 100%;
+    z-index: 100;
 }
 
 .bet-input-group {
