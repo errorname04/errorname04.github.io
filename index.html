@@ -147,6 +147,9 @@
 					// check match (case-insensitive) and compute per-word WPM
 					let wpmForThis = 0;
 					const correct = (typed.length === window._targetWord.length && typed.toLowerCase() === window._targetWord.toLowerCase());
+					const prevStreak = window.streak || 0;
+					let willIncrease = false;
+
 					if (correct) {
 						if (window.wordStartTime) {
 							const secs = (Date.now() - window.wordStartTime) / 1000;
@@ -157,8 +160,9 @@
 						}
 						// only increase streak if WPM > 20
 						if (wpmForThis > 20) {
-							window.streak = (window.streak || 0) + 1;
+							window.streak = prevStreak + 1;
 							window.correctCount = (window.correctCount || 0) + 1;
+							willIncrease = true;
 						} else {
 							window.streak = 0;
 						}
@@ -167,13 +171,13 @@
 						wpmForThis = 0;
 					}
 
-					// visual flash
+					// visual flash: green only when streak actually increased; red otherwise
 					const flashEl = document.getElementById('flash');
 					if (flashEl) {
 						flashEl.classList.remove('flash-green', 'flash-red');
 						// force reflow to restart animation
 						void flashEl.offsetWidth;
-						if (correct) flashEl.classList.add('flash-green');
+						if (willIncrease) flashEl.classList.add('flash-green');
 						else flashEl.classList.add('flash-red');
 						// remove class after animation ends
 						const onAnimEnd = () => { flashEl.classList.remove('flash-green', 'flash-red'); flashEl.removeEventListener('animationend', onAnimEnd); };
