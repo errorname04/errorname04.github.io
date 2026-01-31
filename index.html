@@ -1,56 +1,176 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Card Dealer</title>
-    <link rel="stylesheet" href="style.css">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>typer</title>
+	<style>
+		html, body { height: 100%; margin: 0; }
+		body {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: linear-gradient(180deg,#2b2b2b,#0b0b0b);
+			color: #ff8c00;
+			font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+			font-size: 24pt;
+		}
+		#word { padding: 8px 12px; }
+	</style>
 </head>
 <body>
-    <div class="game-info">
-        <div class="round-indicator">Round: <span id="roundNumber">1</span> / 4</div>
-        <div class="pot-display">Pot: $<span id="potAmount">0</span></div>
-    </div>
-    <div class="game-area">
-        <div class="other-players-container" id="otherPlayers"></div>
-        <div class="community-cards-section">
-            <div class="cards-container" id="communityCards">
-                <div class="card card-back" id="community1">
-                    <div class="card-back">?</div>
-                </div>
-                <div class="card card-back" id="community2">
-                    <div class="card-back">?</div>
-                </div>
-                <div class="card card-back" id="community3">
-                    <div class="card-back">?</div>
-                </div>
-                <div class="card card-back" id="community4">
-                    <div class="card-back">?</div>
-                </div>
-                <div class="card card-back" id="community5">
-                    <div class="card-back">?</div>
-                </div>
-            </div>
-        </div>
-        <div class="player-cards-section">
-            <div class="cards-container">
-                <div class="card" id="card1">
-                    <div class="card-back">?</div>
-                </div>
-                <div class="card" id="card2">
-                    <div class="card-back">?</div>
-                </div>
-            </div>
-        </div>
-        <div class="betting-controls">
-            <div class="bet-input-group">
-                <label for="betAmount">Bet Amount:</label>
-                <input type="number" id="betAmount" min="0" value="0" placeholder="Enter amount">
-                <button id="betButton" class="bet-button">Add to Pot</button>
-            </div>
-            <button id="nextRoundButton" class="next-round-button">Next Round</button>
-        </div>
-    </div>
-    <script src="script.js"></script>
+	<div id="wpm">WPM: 0</div>
+	<div id="word" aria-live="polite">Loading...</div>
+	<div id="streak">0</div>
+
+	<!-- Embedded fallback words (from words.txt) -->
+	<script id="words-data" type="application/json">["resink","transversomedial","pharyngopathy","postmineral","myelosyphilis","silverer","evincement","phrygium","punnigram","imminution","environmental","sleepify","nope","wauken","indignance","knotwort","apocodeine","escortee","dogwatch","eaglewood","unbrotherliness","mulse","dermobranchiata","typhic","poststertorous","indevout","anatomicopathologic","unimpenetrable","hoggy","urrhodin","Dioecia","unchapter","nonumbilicate","zwitterionic","apportionable","ferulic","statefulness","pharyngotonsillitis","Mimulus","recce","mutinously","reboant","marshwort","lupoid","chromatophilic","lauder","nirles","esthesiometer","semisocial","unbeing","kangaroo","takosis","inconvertibility","anesthetist","rumorproof","thoracoscopy","euphorbium","bizet","song","dolichocephali","platemaker","vesicupapular","electroforming","dilatingly","meethelp","loincloth","avowably","counterindicate","treacliness","Epigonus","airmark","polarography","precomposition","lemography","Apinage","Taal","logology","probeer","randomization","poditic","individualize","castigate","Biloculina","overscrub","koolah","weetless","erased","layery","discontinuee","anaphylatoxin","unwounded","personalism","howitzer","hexahydroxy","koku","reamer","tonguiness","microgametocyte","baba","ludefisk","novelwright","swinehull","Odonata","indefinable","faineance","nidologist","supracargo","beriberic","betso","archheart","snary","Viminal","Pygopodidae","acetylenediurein","asphalt","preimpress","fountainlet","bejel","unpictorially","heliophyte","chimopeelagic","warison","antivaccinist","overtwine","preremove","nerval","bufonite","eradicator","turtling","winrace","psychographic","impalpably","amygdalase","Octogynia","brimming","grist","casave","brazilein","afluking","meliceris","portative","unsteck","Madelon","barramunda","optotechnics","metapterygium","unromanticalness","Jacobinism","pricklingly","blameless","elderhood","committeewoman","comicocynical","aggrate","stentoronic","flatwise","bipyridyl","untastable","aegerian","unmistrusted","quadrigamist","Meleagrinae","helvite","neuralist","Swietenia","unpleadable","colorably","mogilalism","consequently","atamasco","inhospitality","noncarnivorous","counterruin","gryposis","ringe","displeasedly","incenter","gallycrow","whincow","repudiationist","unagile","chaplain","bekerchief","subproduct","pointingly","Physonectae","bumpingly","hateful","endogenous","facticide","velours","carmoisin","reaccomplish","protistic","recuperance","tech","withywind","Galen","Slavistic","escropulo","deglutination","hydramnios","Amphion","beguilement","glottiscope","propagation","entrancement","disbelief","goatlike","Tanyoan","thecium","deforciant","coachwhip","enviableness","duroquinone","smirchy","whisky","forcing","homosystemic","underact","autosyndesis","sybaritism","scorching","testiere","nonporphyritic","cephalhematoma","oxyquinoline","azo","scrimshorn","unreeling","burnt","kilocycle","lactenin","Decimus","patter","jetbead","Pygidium","bitterroot","thoke","septated","trinodal","qualitied","gotten","unclassable","Akhissar","wholewise","curse","organophyly","teleseme","heptitol","whitehass","asclepiadeous","labionasal","presumptuous","triketo","thrombolymphangitis","spokeswomanship","unprejudicial","ungoverned","nonrectangular","pleocrystalline","slurbow","unhandsome","scoliotic","phreatophyte","criminalistics","imitability","zygozoospore","nonliability","disafforestation","epigenetic","Aves","schistaceous","verbomania","epitenon","proscriber","histology","propulsion","elaidinic","driftless","upcover","duteous","distasteful","dermatoxerasia","Kaibartha","spydom","tonsor","paedogenesis","anticipatory","unastonished","Blackbeard","gradient","metachemistry","caravan","circumnutate","infract","adenia","louse","koel","tributyrin","lifey","Desmidiaceae","vinelet","inggrowth","uniovulate","toying","nonretentive","conjunct","pinnaglobin","vastity","appendicle","redecline","trekker","hereby","dicatalexis","slackerism","inaxon","tribase","cryptostome","nonpresbyter","breezily","opusculum","methought","yarl","fringent","forsooth","plicater","balneotherapeutics","uredosporic","perceptive","embouchure","heterolysis","imperence","perfervidness","pobs","thorax","perikronion","charlatanic","Bonapartism","whilom","outferret","kelty","macrospore","predisposedly","squawk","extrafoliaceous","inveteracy","obtect","decoyer","Pelecaniformes","dodecane","gambet","electrodynamism","henter","sunless","burroweed","busket","trepidatory","fermerer","prewound","thrifty","twibil","amateur","myasthenia","goave","toolmark","ornithon","geminately","unrhymed","Serridentines","presbyopia","unoperably","preventer","salten","grimily","conduplicated","theomania","gyromagnetic","antimycotic","malacanthid","sensationistic","vibraculoid","eater","zig","bordello","hounding","outweary","hoyle","nonrendition","potlike","surflike","rubification","dulcifluous","Saturnalian","unconfidence","Apneumona","hedgy","subharmonic","undisputed","monotypic"]</script>
+
+	<style>
+		#wpm { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 20pt; font-weight: 600; }
+		#streak { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 20pt; font-weight: 600; }
+		.letter { padding: 0 2px; white-space: pre; }
+		.correct { color: #00c853; }
+		.wrong { color: #ff1744; }
+		.pending { color: #ff8c00; }
+		.success { background: #2e7d32 !important; color: #000 !important; }
+	</style>
+
+	<script>
+		let typed = '';
+		window.typed = typed;
+		window.streak = 0;
+		window.correctCount = 0;
+		window.wordStartTime = null; // ms for current word
+		window.lastWpm = 0;
+
+		function pickRandom(words) {
+			if (!Array.isArray(words) || words.length === 0) return null;
+			return words[Math.floor(Math.random() * words.length)];
+		}
+
+		function renderWord(word, typedSoFar) {
+			const out = document.getElementById('word');
+			out.innerHTML = '';
+			const wl = word.length;
+			const typedLower = (typedSoFar || '').toLowerCase();
+			const wordLower = word.toLowerCase();
+			for (let i = 0; i < wl; i++) {
+				const ch = word[i];
+				const span = document.createElement('span');
+				span.classList.add('letter');
+				if (i < typedSoFar.length) {
+					if (typedLower[i] === wordLower[i]) span.classList.add('correct');
+					else span.classList.add('wrong');
+				} else {
+					span.classList.add('pending');
+				}
+				span.textContent = ch;
+				out.appendChild(span);
+			}
+		}
+
+		function updateWPM(value) {
+			const wpmEl = document.getElementById('wpm');
+			const v = (typeof value === 'number') ? value : 0;
+			wpmEl.textContent = v + " wpm";
+			window.lastWpm = v;
+		}
+
+		async function loadRandomWord() {
+			let words = [];
+			try {
+				const res = await fetch('words.txt');
+				if (res.ok) {
+					const text = await res.text();
+					words = text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+				}
+			} catch (e) {
+				// ignore fetch errors (file://); fallback to embedded
+			}
+
+			if (!words || words.length === 0) {
+				const el = document.getElementById('words-data');
+				if (el && el.textContent) {
+					try { words = JSON.parse(el.textContent); } catch (err) { words = []; }
+				}
+			}
+
+			function updateStreak() {
+				const s = document.getElementById('streak');
+				if (s) s.textContent = String(window.streak || 0);
+			}
+
+			function nextWord() {
+				const newWord = pickRandom(words) || '';
+				window._targetWord = newWord;
+				typed = '';
+				window.typed = typed;
+				window.wordStartTime = null;
+				renderWord(newWord, typed);
+				updateStreak();
+			}
+
+			// pick initial
+			nextWord();
+
+			// keyboard handling
+			window.addEventListener('keydown', (e) => {
+				if (!window._targetWord) return;
+
+				if (e.key === 'Backspace') {
+					typed = typed.slice(0, -1);
+					window.typed = typed;
+					renderWord(window._targetWord, typed);
+					e.preventDefault();
+					return;
+				}
+
+				if (e.key === 'Enter') {
+					// check match (case-insensitive) and compute per-word WPM
+					let wpmForThis = 0;
+					if (typed.length === window._targetWord.length && typed.toLowerCase() === window._targetWord.toLowerCase()) {
+						if (window.wordStartTime) {
+							const secs = (Date.now() - window.wordStartTime) / 1000;
+							if (secs > 0) {
+								const chars = window._targetWord.length;
+								wpmForThis = Math.round((chars / 5) * 60 / secs);
+							}
+						}
+						// only increase streak if WPM > 20
+						if (wpmForThis > 20) {
+							window.streak = (window.streak || 0) + 1;
+							window.correctCount = (window.correctCount || 0) + 1;
+						} else {
+							window.streak = 0;
+						}
+					} else {
+						window.streak = 0;
+						wpmForThis = 0;
+					}
+					updateStreak();
+					updateWPM(wpmForThis);
+					// show next word regardless
+					nextWord();
+					return;
+				}
+
+				// Accept single-character input
+				if (e.key && e.key.length === 1) {
+					if (typed.length === 0) {
+						// start timer for this word when first char typed
+						window.wordStartTime = Date.now();
+					}
+					if (typed.length < window._targetWord.length) {
+						typed += e.key;
+						window.typed = typed;
+						renderWord(window._targetWord, typed);
+					}
+				}
+			});
+		}
+
+		window.addEventListener('DOMContentLoaded', loadRandomWord);
+	</script>
 </body>
 </html>
