@@ -19,9 +19,10 @@
 	</style>
 </head>
 <body>
-	<div id="wpm">WPM: 0</div>
+	<div id="wpm">WPM: 0 <span id="threshold">threshold: 20</span></div>
 	<div id="word" aria-live="polite">Loading...</div>
-	<div id="streak">0</div>
+	<div id="pauseIcon">⏸</div>
+	<div id="streak">0 <span id="timer">0:00</span></div>
 
 	<!-- Fullscreen flash overlay for correct/incorrect feedback -->
 	<div id="flash" aria-hidden="true"></div>
@@ -51,6 +52,7 @@
 		.wrong { color: #ff1744; }
 		.pending { color: #ff8c00; }
 		.success { background: #2e7d32 !important; color: #000 !important; }
+		#pauseIcon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; font-size: 120px; color: #444; }
 	</style>
 
 	<script>
@@ -60,10 +62,32 @@
 		window.correctCount = 0;
 		window.wordStartTime = null; // ms for current word
 		window.lastWpm = 0;
+		window.wpmThreshold = 19; // threshold for counting streak
+		window.sessionStartTime = null; // ms for session timer
+		let timerInterval = null;
+		let isPaused = false;
+		let pauseTime = null; // when pause started
+		let totalPausedDuration = 0; // cumulative pause duration
 
 		function pickRandom(words) {
 			if (!Array.isArray(words) || words.length === 0) return null;
 			return words[Math.floor(Math.random() * words.length)];
+		}
+
+		function formatTime(seconds) {
+			const mins = Math.floor(seconds / 60);
+			const secs = seconds % 60;
+			return `${mins}:${secs.toString().padStart(2, '0')}`;
+		}
+
+		function updateTimer() {
+			if (window.sessionStartTime) {
+				const elapsed = Math.floor((Date.now() - window.sessionStartTime) / 1000);
+				const timerEl = document.getElementById('timer');
+				if (timerEl) {
+					timerEl.textContent = formatTime(elapsed);
+				}
+			}
 		}
 
 		function renderWord(word, typedSoFar) {
@@ -90,7 +114,12 @@
 		function updateWPM(value) {
 			const wpmEl = document.getElementById('wpm');
 			const v = (typeof value === 'number') ? value : 0;
-			wpmEl.textContent = v + " wpm";
+			wpmEl.textContent = v + " wpm ";
+			const thresholdSpan = document.createElement('span');
+			thresholdSpan.id = 'threshold';
+			thresholdSpan.style.marginLeft = '40px';
+			thresholdSpan.textContent = 'threshold: ' + window.wpmThreshold;
+			wpmEl.appendChild(thresholdSpan);
 			window.lastWpm = v;
 		}
 
@@ -115,7 +144,14 @@
 
 			function updateStreak() {
 				const s = document.getElementById('streak');
-				if (s) s.textContent = String(window.streak || 0);
+				if (s) {
+					s.innerHTML = String(window.streak || 0) + ' ';
+					const timerSpan = document.createElement('span');
+					timerSpan.id = 'timer';
+					timerSpan.style.marginLeft = '40px';
+					timerSpan.textContent = formatTime(window.sessionStartTime ? Math.floor((Date.now() - window.sessionStartTime) / 1000) : 0);
+					s.appendChild(timerSpan);
+				}
 			}
 
 			function nextWord() {
@@ -126,6 +162,9 @@
 				window.wordStartTime = null;
 				renderWord(newWord, typed);
 				updateStreak();
+				// increase threshold for next word
+				window.wpmThreshold += 1;
+				updateWPM(window.lastWpm);
 			}
 
 			// pick initial
@@ -134,6 +173,33 @@
 			// keyboard handling
 			window.addEventListener('keydown', (e) => {
 				if (!window._targetWord) return;
+
+				if (e.key === ' ') {
+					// Toggle pause
+					e.preventDefault();
+					isPaused = !isPaused;
+					const pauseIcon = document.getElementById('pauseIcon');
+					const wordEl = document.getElementById('word');
+					
+					if (isPaused) {
+						pauseTime = Date.now();
+						pauseIcon.style.display = 'block';
+						wordEl.style.visibility = 'hidden';
+						if (timerInterval) clearInterval(timerInterval);
+					} else {
+						const pauseDuration = Date.now() - pauseTime;
+						totalPausedDuration += pauseDuration;
+						// Adjust start times by pause duration
+						if (window.wordStartTime) window.wordStartTime += pauseDuration;
+						if (window.sessionStartTime) window.sessionStartTime += pauseDuration;
+						pauseIcon.style.display = 'none';
+						wordEl.style.visibility = 'visible';
+						if (window.sessionStartTime) {
+							timerInterval = setInterval(updateTimer, 1000);
+						}
+					}
+					return;
+				}
 
 				if (e.key === 'Backspace') {
 					typed = typed.slice(0, -1);
@@ -144,6 +210,8 @@
 				}
 
 				if (e.key === 'Enter') {
+					if (isPaused) return; // don't allow enter while paused
+					
 					// check match (case-insensitive) and compute per-word WPM
 					let wpmForThis = 0;
 					const correct = (typed.length === window._targetWord.length && typed.toLowerCase() === window._targetWord.toLowerCase());
@@ -158,16 +226,26 @@
 								wpmForThis = Math.round((chars / 5) * 60 / secs);
 							}
 						}
-						// only increase streak if WPM > 20
-						if (wpmForThis > 20) {
+						// only increase streak if WPM > threshold
+						if (wpmForThis > window.wpmThreshold) {
 							window.streak = prevStreak + 1;
 							window.correctCount = (window.correctCount || 0) + 1;
 							willIncrease = true;
 						} else {
 							window.streak = 0;
+							window.sessionStartTime = null; // reset timer
+							if (timerInterval) clearInterval(timerInterval);
+							timerInterval = null;
+							window.wpmThreshold = 19; // reset threshold
+							totalPausedDuration = 0;
 						}
 					} else {
 						window.streak = 0;
+						window.sessionStartTime = null; // reset timer
+						if (timerInterval) clearInterval(timerInterval);
+						timerInterval = null;
+						window.wpmThreshold = 19; // reset threshold
+						totalPausedDuration = 0;
 						wpmForThis = 0;
 					}
 
@@ -192,10 +270,16 @@
 				}
 
 				// Accept single-character input
-				if (e.key && e.key.length === 1) {
+				if (e.key && e.key.length === 1 && !isPaused) {
 					if (typed.length === 0) {
 						// start timer for this word when first char typed
 						window.wordStartTime = Date.now();
+						// start session timer on first character of first word
+						if (!window.sessionStartTime) {
+							window.sessionStartTime = Date.now();
+							timerInterval = setInterval(updateTimer, 1000);
+							updateTimer();
+						}
 					}
 					if (typed.length < window._targetWord.length) {
 						typed += e.key;
