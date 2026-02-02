@@ -62,7 +62,7 @@
 		window.correctCount = 0;
 		window.wordStartTime = null; // ms for current word
 		window.lastWpm = 0;
-		window.wpmThreshold = 19; // threshold for counting streak
+		window.wpmThreshold = 25; // threshold for counting streak (fixed)
 		window.sessionStartTime = null; // ms for session timer
 		let timerInterval = null;
 		let isPaused = false;
@@ -162,8 +162,6 @@
 				window.wordStartTime = null;
 				renderWord(newWord, typed);
 				updateStreak();
-				// increase threshold for next word
-				window.wpmThreshold += 1;
 				updateWPM(window.lastWpm);
 			}
 
@@ -236,7 +234,6 @@
 							window.sessionStartTime = null; // reset timer
 							if (timerInterval) clearInterval(timerInterval);
 							timerInterval = null;
-							window.wpmThreshold = 19; // reset threshold
 							totalPausedDuration = 0;
 						}
 					} else {
@@ -244,7 +241,6 @@
 						window.sessionStartTime = null; // reset timer
 						if (timerInterval) clearInterval(timerInterval);
 						timerInterval = null;
-						window.wpmThreshold = 19; // reset threshold
 						totalPausedDuration = 0;
 						wpmForThis = 0;
 					}
